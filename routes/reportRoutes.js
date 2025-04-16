@@ -70,4 +70,34 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
+
+// Delete report
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const report = await Report.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user.id
+    });
+
+    if (!report) {
+      return res.status(404).json({ 
+        error: 'Report not found or you are not authorized to delete it'
+      });
+    }
+
+    res.status(200).json({ 
+      success: true,
+      message: 'Report deleted successfully',
+      deletedId: report._id
+    });
+    
+  } catch (err) {
+    console.error('Delete report error:', err);
+    res.status(500).json({ 
+      error: 'Server error while deleting report',
+      details: err.message 
+    });
+  }
+});
+
 module.exports = router;
