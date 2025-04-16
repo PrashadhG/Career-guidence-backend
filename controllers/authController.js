@@ -19,7 +19,7 @@ exports.registerUser = async (req, res) => {
         await user.save();
 
         // Generate token
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
         res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
     } catch (err) {
@@ -41,7 +41,7 @@ exports.loginUser = async (req, res) => {
         if (!isMatch) return res.status(400).json({ msg: "Invalid Credentials" });
 
         // Generate token
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 
         res.json({ token, user: { id: user.id, name: user.name, email: user.email } });
     } catch (err) {
